@@ -130,7 +130,7 @@ namespace TextRPG
                         Inn(player);
                         break;
                     case 5:
-                        Dungeon();
+                        Dungeon(player);
                         break;
                     case 6:
                         Gameend = false;
@@ -307,7 +307,7 @@ namespace TextRPG
                     Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n " +
                         $"돈:{player.Money} ->{player.Money + ClearMoney + plusMoney}");
                     player.currenthealth -= minushealth;
-                    player.Money += ClearMoney +  plusMoney);
+                    player.Money += ClearMoney + plusMoney;
                     Console.WriteLine("0. 나가기");
                     int j = int.Parse(Console.ReadLine());
                     if (j == 0)
@@ -319,13 +319,14 @@ namespace TextRPG
                 else
                 {
                     Console.WriteLine("던전 패배");
-                    Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}"};
-                player.currenthealth -= minushealth;
-                Console.WriteLine("0. 나가기");
-                int j = int.Parse(Console.ReadLine());
-                if (j == 0)
-                {
-                    GoToVillage(player);
+                    Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}");
+                    player.currenthealth -= minushealth;
+                    Console.WriteLine("0. 나가기");
+                    int j = int.Parse(Console.ReadLine());
+                    if (j == 0)
+                    {
+                        GoToVillage(player);
+                    }
                 }
             }
             else
@@ -333,7 +334,7 @@ namespace TextRPG
                 Console.WriteLine("던전 승리!");
                 Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n " +
                         $"돈:{player.Money} ->{player.Money + ClearMoney + plusMoney}");
-                player.Money += ClearMoney + plusMoney);
+                player.Money += ClearMoney + plusMoney;
                 Console.WriteLine("0. 나가기");
                 int j = int.Parse(Console.ReadLine());
                 if (j == 0)
