@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Collections.Generic;
 using static TextRPG.Program;
+using System.Collections;
 
 
 namespace TextRPG
@@ -32,6 +33,7 @@ namespace TextRPG
                 case 1:
                     Job = "전사";
                     Player player1 = new Player(name, Job);
+                    player1.currenthealth = player1.Maxhealth;
                     player1.useitem.Add(new Weapon("철검", "기본적인 검이다", 2, "0")); 
                     Console.WriteLine("기본 장비:" + player1.useitem[0].ToString());
                     Thread.Sleep(1000);
@@ -42,6 +44,7 @@ namespace TextRPG
                 case 2:
                     Job = "마법사";
                     Player player2 = new Player(name, Job);
+                    player2.currenthealth = player2.Maxhealth;
                     player2.useitem.Add(new Weapon("지팡이", "기본적인 지팡이다", 2, "0"));
                     Console.WriteLine("기본 장비:" + player2.useitem[0].ToString());
                     Thread.Sleep(1000);
@@ -52,12 +55,14 @@ namespace TextRPG
                 case 3:
                     Job = "궁수";
                     Player player3 = new Player(name, Job);
+                    player3.currenthealth = player3.Maxhealth;
                     player3.useitem.Add(new Weapon("활", "기본적인 활이다", 2, "0"));
                     Console.WriteLine("기본 장비:" + player3.useitem[0].ToString());
                     Thread.Sleep(1000);
                     Console.Clear();
                     Console.WriteLine("눈을 뜨니 앞에 한 마을이 보인다.\n");
                     GoToVillage(player3);
+                    
                     break;
             }
 
@@ -66,9 +71,33 @@ namespace TextRPG
 
         public static void GoToVillage(Player player)
         {
+
+
+
+            //아이템들 적용시켜주기
+            foreach (Item item in player.useitem)
+            {
+                if (item.itemtype.Equals("공"))
+                {                
+                    player.attack += item.itemability;
+                }
+                else if (item.itemtype.Equals("방"))
+                {
+                    
+                    player.defense += item.itemability;
+                }
+                else if (item.itemtype.Equals("체"))
+                {
+                    
+                    player.Maxhealth += item.itemability;
+                }
+
+
+            }
             bool Gameend = true;
             while (Gameend)
             {
+               
                 Console.WriteLine("[촌장의 딸/ 앨리스]");
                 Console.WriteLine("\"안녕하세요, 모험가분이시라면 아래의 곳들을 둘러볼 수 있어요\"");
                 Console.WriteLine("1. 상태 보기");
@@ -81,6 +110,7 @@ namespace TextRPG
                 Console.WriteLine("무엇을 할까?");
                 int select = int.Parse(Console.ReadLine());
 
+                
 
 
                 switch (select) 
@@ -94,6 +124,7 @@ namespace TextRPG
                     case 3:
                         break;
                     case 4:
+                        Inn(player);
                         break;
                     case 5:
                         break;
@@ -120,12 +151,34 @@ namespace TextRPG
 
         public void shop(Player player)
         {
+            
+            
 
         }
 
-        public void Inn(Player player)
+        public static void Inn(Player player)
         {
+            Console.Clear();
+            Console.WriteLine("[촌장의 아내/ 베이지]");
+            Console.WriteLine("\"모험가라면 잠시 쉬다가세요\"");
+            if (player.Money < 500)
+            {
+                Console.WriteLine("돈이 쪼금 모자라네~");
 
+            }
+            else if (player.currenthealth == player.Maxhealth)
+            {
+                Console.WriteLine("몸이 멀쩡한 것 같은데?");
+            }
+            else
+            {
+                player.currenthealth += 50;
+                if (player.currenthealth > player.Maxhealth)
+                {
+                    player.currenthealth = player.Maxhealth;
+                }
+                player.Money -= 500;
+            }
         }
         public void Dungeon(Player player)
         {
@@ -136,13 +189,14 @@ namespace TextRPG
         public class Player
         { 
 
-            private int level {  get; set; }
-            private int health { get; set; }
-            private int attack {  get; set; }
-            private int defense { get; set; }
-            private String name {  get; set; }
-            private String Job { get; set; }
-            private int Money { get; set; }
+            public int level {  get; set; }
+            public int Maxhealth { get; set; }
+            public int currenthealth { get; set; }
+            public int attack {  get; set; }
+            public int defense { get; set; }
+            public String name {  get; set; }
+            public String Job { get; set; }
+            public int Money { get; set; }
 
             //public Item[] EquipItem = new Item[7]; //투구, 갑옷, 신발, 무기, 액세사리, 액세사리
             //public Item[] NoEquip = new Item [20];//가방
@@ -160,7 +214,7 @@ namespace TextRPG
                 name = n;
                 Job = j;
                 level = 0;
-                health = 100;
+                Maxhealth = 100;
                 attack = 10;
                 defense = 5;
                 Money = 1500;
@@ -302,46 +356,25 @@ namespace TextRPG
 
             public void Status()
             {
-                Console.Clear();
-
-                int attackabil = 0;
-                int defenseabill = 0;
-                int healthabill = 0;
-
-                foreach(Item item in useitem)
-                {
-                    if (item.itemtype.Equals("공"))
-                    {
-                        attackabil += item.itemability;
-                        attack += attackabil;
-                    }
-                    else if (item.itemtype.Equals("방"))
-                    {
-                        defenseabill += item.itemability;
-                        defense += defenseabill;
-                    }
-                    else if (item.itemtype.Equals("체"))
-                        healthabill += item.itemability;
-                         health += healthabill;
-                    
-                }
+ 
 
                 Console.WriteLine(name);
                 Console.WriteLine($"Lv.{level}");
                 Console.WriteLine("chad:" + Job );
 
                 if (attack > 10)
-                { Console.WriteLine($"공격력: {attack} + ({attackabil})"); }
+                { Console.WriteLine($"공격력: {attack} + ({attack-10l})"); }
                 else
                 { Console.WriteLine($"공격력: {attack}"); }
                 if (defense > 5)
-                { Console.WriteLine($"방어력: {defense + defenseabill} + ({defense + defenseabill})"); }
+                { Console.WriteLine($"방어력: {defense} + ({defense-5})"); }
                 else
                 { Console.WriteLine($"방어력: {defense}"); }
-                if (health > 100)
-                { Console.WriteLine($"체력: {health + healthabill} + ({healthabill})"); }
+                if (Maxhealth > 100)
+                { Console.WriteLine($"최대체력: {Maxhealth} + ({Maxhealth-100})"); }
                 else
-                { Console.WriteLine($"체력: {health}"); }
+                { Console.WriteLine($"최대체력: {Maxhealth}"); }
+                Console.WriteLine($"현재체력: {currenthealth}");
                 Console.WriteLine($"돈: {Money}");
 
                 Console.WriteLine("0.나가기");
@@ -358,9 +391,9 @@ namespace TextRPG
 
         public class Item
         {
-            protected String itemname { get; set; }
-            protected String itemdesc { get; set; }
-            protected String itemMoney { get; set; }
+            protected String itemname;
+            protected String itemdesc;
+            protected String itemMoney;
             public String itemtype = "기본";
             public int itemability { get; set; }
         }
