@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Collections.Generic;
 using static TextRPG.Program;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace TextRPG
 {
@@ -32,8 +32,8 @@ namespace TextRPG
                 case 1:
                     Job = "전사";
                     Player player1 = new Player(name, Job);
-                    player1.EquipItem[0] = new Weapon("철검", "기본적인 검이다", 2, "0");
-                    Console.WriteLine("기본 장비:" + player1.EquipItem[0].ToString());
+                    player1.useitem.Add(new Weapon("철검", "기본적인 검이다", 2, "0")); 
+                    Console.WriteLine("기본 장비:" + player1.useitem[0].ToString());
                     Thread.Sleep(1000);
                     Console.Clear();
                     Console.WriteLine("눈을 뜨니 앞에 한 마을이 보인다.");
@@ -42,8 +42,8 @@ namespace TextRPG
                 case 2:
                     Job = "마법사";
                     Player player2 = new Player(name, Job);
-                    player2.EquipItem[0] = new Weapon("지팡이", "기본적인 지팡이다", 2, "0");
-                    Console.WriteLine("기본 장비:" + player2.EquipItem[0].ToString());
+                    player2.useitem.Add(new Weapon("지팡이", "기본적인 지팡이다", 2, "0"));
+                    Console.WriteLine("기본 장비:" + player2.useitem[0].ToString());
                     Thread.Sleep(1000);
                     Console.Clear();
                     Console.WriteLine("눈을 뜨니 앞에 한 마을이 보인다.");
@@ -52,8 +52,8 @@ namespace TextRPG
                 case 3:
                     Job = "궁수";
                     Player player3 = new Player(name, Job);
-                    player3.EquipItem[0] = new Weapon("활", "기본적인 활이다", 2, "0");
-                    Console.WriteLine("기본 장비:" + player3.EquipItem[0].ToString());
+                    player3.useitem.Add(new Weapon("활", "기본적인 활이다", 2, "0"));
+                    Console.WriteLine("기본 장비:" + player3.useitem[0].ToString());
                     Thread.Sleep(1000);
                     Console.Clear();
                     Console.WriteLine("눈을 뜨니 앞에 한 마을이 보인다.\n");
@@ -69,7 +69,7 @@ namespace TextRPG
             bool Gameend = true;
             while (Gameend)
             {
-                Console.WriteLine("촌장의 딸/ 앨리스");
+                Console.WriteLine("[촌장의 딸/ 앨리스]");
                 Console.WriteLine("\"안녕하세요, 모험가분이시라면 아래의 곳들을 둘러볼 수 있어요\"");
                 Console.WriteLine("1. 상태 보기");
                 Console.WriteLine("2. 가방 확인");
@@ -80,6 +80,8 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("무엇을 할까?");
                 int select = int.Parse(Console.ReadLine());
+
+
 
                 switch (select) 
                 {
@@ -142,16 +144,17 @@ namespace TextRPG
             private String Job { get; set; }
             private int Money { get; set; }
 
-            public Item[] EquipItem = new Item[7]; //투구, 갑옷, 신발, 무기, 액세사리, 액세사리
-            public Item[] NoEquip = new Item [20];//가방
+            //public Item[] EquipItem = new Item[7]; //투구, 갑옷, 신발, 무기, 액세사리, 액세사리
+            //public Item[] NoEquip = new Item [20];//가방
 
-            public List<Item> AllEquip = new List<Item>(); //장비 장착을 위한 칸
-
-
-
+            public List<Item> useitem = new List<Item>();
+            public List<Item> nouseitem = new List<Item>();
 
 
-            
+
+
+
+
             public Player(String n, String j) 
             {
                 name = n;
@@ -165,20 +168,28 @@ namespace TextRPG
 
             public void Inventory()
             {
-
-                if (EquipItem != null)
+                if (useitem.Count() == 0 && nouseitem.Count() == 0)
                 {
-                    for (int i = 0; i < EquipItem.Count(); i++)
+                    Console.WriteLine("장비가 없습니다.");
+                    Thread.Sleep(700);
+                    Console.Clear();
+                    GoToVillage(this);
+                }
+
+                if (useitem != null)
+                {
+                    for (int i = 0; i < useitem.Count(); i++)
                     {
-                        Console.WriteLine( "[E]" + EquipItem[i].ToString()); 
+                        
+                        Console.WriteLine( "[E]" + useitem[i].ToString()); 
                     }
                 }
-                //전체 null체크 / 개별 null체크 / ToString
-                if (NoEquip != null)
+              
+                if (nouseitem != null)
                 {
-                    for (int i = 0; i < NoEquip.Count(); i++)
+                    for (int i = 0; i < nouseitem.Count(); i++)
                     {
-                        Console.WriteLine(NoEquip.ToString());
+                        Console.WriteLine(nouseitem[i].ToString());
                     }
                 }
 
@@ -194,7 +205,9 @@ namespace TextRPG
                     }
                     else if(s == 1)
                     {
-
+                        
+                        Console.Clear();
+                        Change();
                     }
                     else { Console.WriteLine("잘못된 입력입니다."); }
                     
@@ -207,117 +220,161 @@ namespace TextRPG
             }
             public void Change()
             {
-                int number = 1;
+                
+                
 
-            
-
-                if (EquipItem != null)
+                while (true)
                 {
-                    for (int i = 0; i < EquipItem.Count(); i++)
+                    int number = 1;
+                    int nouse = nouseitem.Count();
+                    int use = useitem.Count();
+                    if (useitem != null)
                     {
-                        AllEquip.Add(EquipItem[i]);
-                        Console.WriteLine(number+". "+"[E]" + EquipItem[i].ToString());
-                        number++;   
+                        for (int i = 0; i < use; i++)
+                        {
+                            if (useitem.Count > 0 && useitem[i] != null )
+                            {
+                                Console.WriteLine($"{number}. [E] {useitem[i].ToString()}");
+                                number++;
+                            }
+                        }
+                    }
+
+                    
+                    if (nouseitem != null)
+                    {
+                        for (int i = 0; i < nouse; i++)
+                        {
+                            if (nouseitem.Count > 0) 
+                            {
+                                Console.WriteLine($"{number}. {nouseitem[i].ToString()}");
+                                number++;
+                            } 
+                        }
+                    }
+
+
+
+                    if (nouse > 20)
+                    {
+                        Console.WriteLine("가방 칸이 꽉찼습니다.");
+                    }
+                    
+                    Console.WriteLine("0. 나가기");
+                    Console.WriteLine("번호를 입력하면 장비가 장착/해제 됩니다.");
+                    int s = int.Parse(Console.ReadLine());
+                    Console.Clear();
+
+
+                    if (s == 0)
+                    {
+                        Inventory();
+                    }
+                    else if (s > 0 && use >= s && use != 0) //장착에서 비장착
+                    {
+
+                        nouseitem.Add(useitem[s-1]);
+                        useitem.RemoveAt(s-1);
+                        
+                    }
+                    else if (use + nouse >= s && use < s) //비장착에서 장착
+                    {
+                        foreach(Item item in useitem)
+                        {
+                            if(item.GetType() == nouseitem[s-use].GetType())
+                            {
+                                Console.WriteLine("같은 종류의 장비를 장착중입니다.");
+                                Change();
+                            }
+                        }
+                        useitem.Add(nouseitem[s -use-1]);
+                        nouseitem.RemoveAt(s-use-1);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("잘못된 입력입니다.");
+                        number = 1;
                     }
                 }
-                //전체 null체크 / 개별 null체크 / ToString
-                if (NoEquip != null)
-                {
-                    for (int i = 0; i < NoEquip.Count(); i++)
-                    {
-                        AllEquip.Add(NoEquip[i]);   
-                        Console.WriteLine(number + ". " + NoEquip.ToString());
-                        number++;
-                    }
-                }
-
-
-
-
 
             }
 
             public void Status()
             {
+                Console.Clear();
+
+                int attackabil = 0;
+                int defenseabill = 0;
+                int healthabill = 0;
+
+                foreach(Item item in useitem)
+                {
+                    if (item.itemtype.Equals("공"))
+                    {
+                        attackabil += item.itemability;
+                        attack += attackabil;
+                    }
+                    else if (item.itemtype.Equals("방"))
+                    {
+                        defenseabill += item.itemability;
+                        defense += defenseabill;
+                    }
+                    else if (item.itemtype.Equals("체"))
+                        healthabill += item.itemability;
+                         health += healthabill;
+                    
+                }
+
+                Console.WriteLine(name);
                 Console.WriteLine($"Lv.{level}");
                 Console.WriteLine("chad:" + Job );
 
                 if (attack > 10)
-                { Console.WriteLine($"공격력: {attack} + ({attack - 10})"); }
+                { Console.WriteLine($"공격력: {attack} + ({attackabil})"); }
                 else
                 { Console.WriteLine($"공격력: {attack}"); }
-
-
                 if (defense > 5)
-                { Console.WriteLine($"방어력: {defense} + ({defense - 5})"); }
+                { Console.WriteLine($"방어력: {defense + defenseabill} + ({defense + defenseabill})"); }
                 else
                 { Console.WriteLine($"방어력: {defense}"); }
                 if (health > 100)
-                { Console.WriteLine($"체력: {health} + ({health - 100})"); }
+                { Console.WriteLine($"체력: {health + healthabill} + ({healthabill})"); }
                 else
-                { Console.WriteLine($"체력: {defense}"); }
+                { Console.WriteLine($"체력: {health}"); }
                 Console.WriteLine($"돈: {Money}");
+
+                Console.WriteLine("0.나가기");
+                
+                String s = Console.ReadLine();
+                if(s.Equals("0"))
+                  {
+                    Console.Clear();
+                    GoToVillage(this); 
+                }
+                else { Console.WriteLine("잘못된 입력입니다."); }
             }
-
-
-
-
         }
-
-        public class Inventory
-        {
-            Weapon Weapon { get; set; }
-            Head Head { get; set; }
-            Armor Armor { get; set; } 
-            Shoes  shoes { get; set; }
-            Ring Ring { get; set; }
-            Necklace Necklace { get; set; }
-
-
-
-            public Inventory(Weapon weapon)
-            {
-                Weapon = weapon;
-            }
-            public Inventory(Head Head)
-            {
-                this.Head = Head;
-            }
-            public Inventory(Armor Armor)
-            {
-                this.Armor = Armor;
-            }
-            public Inventory(Shoes shoes)
-            {
-                this.shoes = shoes;
-            }
-            public Inventory(Ring Ring)
-            {
-                this.Ring = Ring;
-            }
-            public Inventory(Necklace Necklace)
-            {
-               this.Necklace = Necklace;
-            }
-
-        }
-
 
         public class Item
         {
             protected String itemname { get; set; }
             protected String itemdesc { get; set; }
             protected String itemMoney { get; set; }
+            public String itemtype = "기본";
+            public int itemability { get; set; }
         }
         public class Weapon : Item
         {
-            private int itemability { get; set; }
+            
+            
             public Weapon(String n, String d, int a, String m)
             {
                 itemname = n;
                 itemdesc = d;
                 itemability = a;
                 itemMoney = m;
+                itemtype = "공";
             }
             public override string ToString()
             {
@@ -329,14 +386,16 @@ namespace TextRPG
         }
         public class Head : Item
         {
-            private int itemability { get; set; }
+           
+            
             public Head(String n, String d, int a, String m)
             {
                 itemname = n;
                 itemdesc = d;
                 itemability = a;
                 itemMoney = m;
-            }
+                itemtype = "방";
+        }
             public override string ToString()
             {
                 StringBuilder str = new StringBuilder();
@@ -347,13 +406,15 @@ namespace TextRPG
         }
         public class Armor : Item
         {
-            private int itemability { get; set; }
+            
+            
             public Armor(String n, String d, int a, String m)
             {
                 itemname = n;
                 itemdesc = d;
                 itemability = a;
                 itemMoney = m;
+                itemtype = "방";
             }
             public override string ToString()
             {
@@ -365,13 +426,15 @@ namespace TextRPG
         }
         public class Shoes : Item
         {
-            private int itemability { get; set; }
+           
+           
             public Shoes(String n, String d, int a, String m)
             {
                 itemname = n;
                 itemdesc = d;
                 itemability = a;
                 itemMoney = m;
+                itemtype = "방";
             }
             public override string ToString()
             {
@@ -383,14 +446,15 @@ namespace TextRPG
         }
         public class Ring : Item
         {
-            private int itemability { get; set; }
+         
             public Ring(String n, String d, int a, String m)
             {
                 itemname = n;
                 itemdesc = d;
                 itemability = a;
                 itemMoney = m;
-            }
+                itemtype = "체";
+        }
             public override string ToString()
             {
                 StringBuilder str = new StringBuilder();
@@ -401,13 +465,13 @@ namespace TextRPG
         }
         public class Necklace : Item
         {
-            private int itemability { get; set; }
             public Necklace(String n, String d, int a, String m)
             {
                 itemname = n;
                 itemdesc = d;
                 itemability = a;
                 itemMoney = m;
+                itemtype = "체";
             }
             public override string ToString()
             {
