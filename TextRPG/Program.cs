@@ -73,27 +73,44 @@ namespace TextRPG
         {
 
 
-
-            //아이템들 적용시켜주기
-            foreach (Item item in player.useitem)
+            if (player.useitem != null)
             {
-                if (item.itemtype.Equals("공"))
+                //아이템들 적용시켜주기
+                foreach (Item item in player.useitem)
                 {
-                    player.attack += item.itemability;
+                    player.attack = 10;
+                    player.defense = 5;
+                    player.Maxhealth = 100;
+                    if (player.currenthealth > player.Maxhealth)
+                    {
+                        player.currenthealth = player.Maxhealth;
+                    }
+
+                    if (item.itemtype.Equals("공"))
+                    {
+                        player.attack += item.itemability;
+                    }
+                    else if (item.itemtype.Equals("방"))
+                    {
+
+                        player.defense += item.itemability;
+                    }
+                    else if (item.itemtype.Equals("체"))
+                    {
+
+                        player.Maxhealth += item.itemability;
+
+                    }
+
+
                 }
-                else if (item.itemtype.Equals("방"))
-                {
 
-                    player.defense += item.itemability;
-                }
-                else if (item.itemtype.Equals("체"))
-                {
-
-                    player.Maxhealth += item.itemability;
-
-                }
-
-
+            }
+            else
+            {
+                player.attack = 10;
+                player.defense = 5;
+                player.Maxhealth = 100;
             }
 
             bool Gameend = true;
@@ -468,7 +485,6 @@ namespace TextRPG
                             }
                         }
                     }
-
 
                     if (nouseitem != null)
                     {
