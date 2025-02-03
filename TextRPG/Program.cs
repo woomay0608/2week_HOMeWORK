@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Collections.Generic;
 using static TextRPG.Program;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TextRPG
 {
@@ -104,6 +105,9 @@ namespace TextRPG
                         Thread.Sleep(1000);
                         Console.WriteLine("Z");
                         break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        break;
 
                 }
 
@@ -139,7 +143,9 @@ namespace TextRPG
             private int Money { get; set; }
 
             public Item[] EquipItem = new Item[7]; //투구, 갑옷, 신발, 무기, 액세사리, 액세사리
-            public Item[] NoEquip = new Item [20];//
+            public Item[] NoEquip = new Item [20];//가방
+
+            public List<Item> AllEquip = new List<Item>(); //장비 장착을 위한 칸
 
 
 
@@ -160,26 +166,74 @@ namespace TextRPG
             public void Inventory()
             {
 
-                    
                 if (EquipItem != null)
-                {for (int i = 0; i < EquipItem.Length; i++)
-                    { if (EquipItem[i] != null)
-                        { Console.WriteLine("[E]" + EquipItem[i].ToString()); } 
+                {
+                    for (int i = 0; i < EquipItem.Count(); i++)
+                    {
+                        Console.WriteLine( "[E]" + EquipItem[i].ToString()); 
                     }
                 }
                 //전체 null체크 / 개별 null체크 / ToString
                 if (NoEquip != null)
-                {for (int i = 0; i < NoEquip.Length; i++)
-                    { if (NoEquip[i] != null)
-                        {Console.WriteLine(NoEquip.ToString());}
+                {
+                    for (int i = 0; i < NoEquip.Count(); i++)
+                    {
+                        Console.WriteLine(NoEquip.ToString());
                     }
                 }
 
-                while (true);
+                while (true)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine("0. 나가기");
+                    Console.WriteLine("1. 장비 설정");
+                    int s = int.Parse(Console.ReadLine());
+                    if(s == 0)
+                    {
+                        GoToVillage(this);
+                        
+                    }
+                    else if(s == 1)
+                    {
+
+                    }
+                    else { Console.WriteLine("잘못된 입력입니다."); }
+                    
+                    
                     
                 }
+
+                
+
+            }
+            public void Change()
+            {
+                int number = 1;
+
+            
+
+                if (EquipItem != null)
+                {
+                    for (int i = 0; i < EquipItem.Count(); i++)
+                    {
+                        AllEquip.Add(EquipItem[i]);
+                        Console.WriteLine(number+". "+"[E]" + EquipItem[i].ToString());
+                        number++;   
+                    }
+                }
+                //전체 null체크 / 개별 null체크 / ToString
+                if (NoEquip != null)
+                {
+                    for (int i = 0; i < NoEquip.Count(); i++)
+                    {
+                        AllEquip.Add(NoEquip[i]);   
+                        Console.WriteLine(number + ". " + NoEquip.ToString());
+                        number++;
+                    }
+                }
+
+
+
+
 
             }
 
