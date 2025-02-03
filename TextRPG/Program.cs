@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using System.Collections.Generic;
+using static TextRPG.Program;
 
 namespace TextRPG
 {
@@ -29,7 +31,7 @@ namespace TextRPG
                 case 1:
                     Job = "전사";
                     Player player1 = new Player(name, Job);
-                    player1.EquipItem[0] = new Item("철검", "기본적인 검이다", 2, "0", "공격력");
+                    player1.EquipItem[0] = new Weapon("철검", "기본적인 검이다", 2, "0");
                     Console.WriteLine("기본 장비:" + player1.EquipItem[0].ToString());
                     Thread.Sleep(1000);
                     Console.Clear();
@@ -39,7 +41,7 @@ namespace TextRPG
                 case 2:
                     Job = "마법사";
                     Player player2 = new Player(name, Job);
-                    player2.EquipItem[0] = new Item("지팡이", "기본적인 지팡이다", 2, "0", "공격력");
+                    player2.EquipItem[0] = new Weapon("지팡이", "기본적인 지팡이다", 2, "0");
                     Console.WriteLine("기본 장비:" + player2.EquipItem[0].ToString());
                     Thread.Sleep(1000);
                     Console.Clear();
@@ -49,7 +51,7 @@ namespace TextRPG
                 case 3:
                     Job = "궁수";
                     Player player3 = new Player(name, Job);
-                    player3.EquipItem[0] = new Item("활", "기본적인 활이다", 2, "0", "공격력");
+                    player3.EquipItem[0] = new Weapon("활", "기본적인 활이다", 2, "0");
                     Console.WriteLine("기본 장비:" + player3.EquipItem[0].ToString());
                     Thread.Sleep(1000);
                     Console.Clear();
@@ -136,9 +138,14 @@ namespace TextRPG
             private String Job { get; set; }
             private int Money { get; set; }
 
-            public Item[] EquipItem = new Item[6]; //투구, 갑옷, 신발, 무기, 액세사리, 액세사리
+            public Item[] EquipItem = new Item[7]; //투구, 갑옷, 신발, 무기, 액세사리, 액세사리
             public Item[] NoEquip = new Item [20];//
 
+
+
+
+
+            
             public Player(String n, String j) 
             {
                 name = n;
@@ -153,10 +160,11 @@ namespace TextRPG
             public void Inventory()
             {
 
+                    
                 if (EquipItem != null)
                 {for (int i = 0; i < EquipItem.Length; i++)
                     { if (EquipItem[i] != null)
-                        { Console.WriteLine("[E]" + EquipItem[i].ToString())} 
+                        { Console.WriteLine("[E]" + EquipItem[i].ToString()); } 
                     }
                 }
                 //전체 null체크 / 개별 null체크 / ToString
@@ -165,6 +173,12 @@ namespace TextRPG
                     { if (NoEquip[i] != null)
                         {Console.WriteLine(NoEquip.ToString());}
                     }
+                }
+
+                while (true);
+                {
+                    Console.WriteLine("");
+                    
                 }
 
             }
@@ -192,44 +206,167 @@ namespace TextRPG
             }
 
 
+
+
         }
+
+        public class Inventory
+        {
+            Weapon Weapon { get; set; }
+            Head Head { get; set; }
+            Armor Armor { get; set; } 
+            Shoes  shoes { get; set; }
+            Ring Ring { get; set; }
+            Necklace Necklace { get; set; }
+
+
+
+            public Inventory(Weapon weapon)
+            {
+                Weapon = weapon;
+            }
+            public Inventory(Head Head)
+            {
+                this.Head = Head;
+            }
+            public Inventory(Armor Armor)
+            {
+                this.Armor = Armor;
+            }
+            public Inventory(Shoes shoes)
+            {
+                this.shoes = shoes;
+            }
+            public Inventory(Ring Ring)
+            {
+                this.Ring = Ring;
+            }
+            public Inventory(Necklace Necklace)
+            {
+               this.Necklace = Necklace;
+            }
+
+        }
+
 
         public class Item
         {
-            private String itemname { get; set; }
-            private String itemdesc { get; set; }
-
+            protected String itemname { get; set; }
+            protected String itemdesc { get; set; }
+            protected String itemMoney { get; set; }
+        }
+        public class Weapon : Item
+        {
             private int itemability { get; set; }
-            private String itemMoney { get; set; }
-            private String Whatability { get; set; }
-
-
-            public Item(String n, String d, int a, String m, String w)
+            public Weapon(String n, String d, int a, String m)
             {
                 itemname = n;
                 itemdesc = d;
                 itemability = a;
                 itemMoney = m;
-                Whatability = w;
             }
-
-
             public override string ToString()
             {
                 StringBuilder str = new StringBuilder();
-
-                str.Append(itemname).Append( "/").Append( Whatability).Append( itemability).Append("/").Append( itemdesc).Append("/"); 
+                str.Append(itemname).Append( "/").Append("공격력").Append( itemability).Append("/").Append( itemdesc).Append("/"); 
                 String s = str.ToString();
                 return s;
-
-                
             }
-
-
-
+        }
+        public class Head : Item
+        {
+            private int itemability { get; set; }
+            public Head(String n, String d, int a, String m)
+            {
+                itemname = n;
+                itemdesc = d;
+                itemability = a;
+                itemMoney = m;
+            }
+            public override string ToString()
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append(itemname).Append("/").Append("방어력").Append(itemability).Append("/").Append(itemdesc).Append("/");
+                String s = str.ToString();
+                return s;
+            }
+        }
+        public class Armor : Item
+        {
+            private int itemability { get; set; }
+            public Armor(String n, String d, int a, String m)
+            {
+                itemname = n;
+                itemdesc = d;
+                itemability = a;
+                itemMoney = m;
+            }
+            public override string ToString()
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append(itemname).Append("/").Append("방어력").Append(itemability).Append("/").Append(itemdesc).Append("/");
+                String s = str.ToString();
+                return s;
+            }
+        }
+        public class Shoes : Item
+        {
+            private int itemability { get; set; }
+            public Shoes(String n, String d, int a, String m)
+            {
+                itemname = n;
+                itemdesc = d;
+                itemability = a;
+                itemMoney = m;
+            }
+            public override string ToString()
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append(itemname).Append("/").Append("방어력").Append(itemability).Append("/").Append(itemdesc).Append("/");
+                String s = str.ToString();
+                return s;
+            }
+        }
+        public class Ring : Item
+        {
+            private int itemability { get; set; }
+            public Ring(String n, String d, int a, String m)
+            {
+                itemname = n;
+                itemdesc = d;
+                itemability = a;
+                itemMoney = m;
+            }
+            public override string ToString()
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append(itemname).Append("/").Append("체력").Append(itemability).Append("/").Append(itemdesc).Append("/");
+                String s = str.ToString();
+                return s;
+            }
+        }
+        public class Necklace : Item
+        {
+            private int itemability { get; set; }
+            public Necklace(String n, String d, int a, String m)
+            {
+                itemname = n;
+                itemdesc = d;
+                itemability = a;
+                itemMoney = m;
+            }
+            public override string ToString()
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append(itemname).Append("/").Append("체력").Append(itemability).Append("/").Append(itemdesc).Append("/");
+                String s = str.ToString();
+                return s;
+            }
         }
 
-        
+
+
+
 
 
 
