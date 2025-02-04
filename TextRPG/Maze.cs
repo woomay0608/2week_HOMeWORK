@@ -24,7 +24,7 @@ namespace Enemy
                 int j = int.Parse(Console.ReadLine());
                 if (j == 1)
                 {
-                    Dungeonrule();
+                    Dungeonrule(player);
                 }
                 else if (j == 0)
                 {
@@ -39,11 +39,11 @@ namespace Enemy
             }
 
         }
-        public static void Dungeonrule()
+        public static void Dungeonrule(Players player)
         {
             Console.Clear();
             Console.WriteLine("던전의 난이도는 총 3개입니다.");
-
+            Console.WriteLine();
             Console.WriteLine("------------권장방어력------------");
             Console.WriteLine("던전마다 각 권장 방어력이 존재하고");
             Console.WriteLine("권장 방어력보다 낮거나 같다면 40%확률로 실패합니다.");
@@ -52,13 +52,19 @@ namespace Enemy
             Console.WriteLine("던전을 클리어하던 실패하던 체력은 감소합니다.");
             Console.WriteLine("체력 감소 비율(랜덤): 20+(내 방어력 - 권장 방어력) ~ 35(내 방어력 - 권장 방어력)");
 
-
+            Console.WriteLine();
             Console.WriteLine("------------클리어 보상------------");
             Console.WriteLine("쉬움: 1000Gold, 일반: 1700Gold, 어려움: 2500G");
             Console.WriteLine("추가로 자기의 공격력에 따라서 추가 보상을 얻습니다.");
             Console.WriteLine("추가 보상 비율(랜덤): 공격력% ~ 공격력*2%");
+            Console.WriteLine();
 
 
+       
+            Console.WriteLine("0. 나가기");
+            int j = int.Parse(Console.ReadLine());
+            if (j == 0) { Dungeon(player); }
+            else { Console.WriteLine("잘못된 입력입니다"); }
         }
 
         public static void GotoDungeon(Players player)
@@ -118,11 +124,18 @@ namespace Enemy
                 if (winper >= 0 && winper < 2)
                 {
                     Console.WriteLine("던전 클리어!");
-                    Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n " +
+                    Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n" +
                         $"돈:{player.Money} ->{player.Money + ClearMoney + plusMoney}");
                     player.currenthealth -= minushealth;
                     player.Money += ClearMoney + plusMoney;
                     player.level += 1;
+
+
+                    Console.WriteLine("레벨업!");
+                    
+ 
+                    Console.WriteLine($"레벨:{player.level-1}->{player.level}");
+                    Console.WriteLine("공격 0.5 증가 , 방어 1 증가 ");
 
 
                     Console.WriteLine("0. 나가기");
@@ -149,11 +162,17 @@ namespace Enemy
             else
             {
                 Console.WriteLine("던전 승리!");
-                Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n " +
+                Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n" +
                         $"돈:{player.Money} ->{player.Money + ClearMoney + plusMoney}");
                 player.Money += ClearMoney + plusMoney;
                 player.level += 1;
- 
+
+                Console.WriteLine("레벨업!");
+
+
+                Console.WriteLine($"레벨:{player.level - 1}->{player.level}");
+                Console.WriteLine("공격 0.5 증가 , 방어 1 증가 ");
+
                 Console.WriteLine("0. 나가기");
                 int j = int.Parse(Console.ReadLine());
                 if (j == 0)

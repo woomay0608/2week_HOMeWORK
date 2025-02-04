@@ -12,7 +12,7 @@ namespace Item
         {
             protected String itemname;
             protected String itemdesc;
-            protected String itemMoney;
+            public String itemMoney;
             public String itemtype = "기본";
             public int itemability { get; set; }
         }

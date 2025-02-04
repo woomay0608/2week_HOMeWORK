@@ -4,7 +4,6 @@ using static TextRPG.Program;
 using System.Collections;
 using static Item.Item; //item.item. items 인데 생략하게 만들어줌
 using static Play.Player;
-using static GameManage.GameManager;
 using Enemy;
 using GameManage;
 
