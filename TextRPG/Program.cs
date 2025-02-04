@@ -17,9 +17,18 @@ namespace TextRPG
         {
             
             GM.ShopItem(items);
-            GM.GameStart();
+            Players player = GM.LoadData();
+            if (player == null ) 
+            {
+                player = GM.Init();
+            }
 
-           
+            GoToVillage(player);
+        
+
+
+
+
 
         }
 
@@ -116,6 +125,7 @@ namespace TextRPG
                         Console.WriteLine("ZZ");
                         Thread.Sleep(1000);
                         Console.WriteLine("Z");
+                        GM.SaveData(player);
                         break;
                     default:
                         Console.WriteLine("잘못된 입력입니다.");

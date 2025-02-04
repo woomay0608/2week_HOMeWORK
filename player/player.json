@@ -1,0 +1,19 @@
+{
+  "useitem": [
+    {
+      "itemMoney": "0",
+      "OriginalMoney": "0",
+      "itemtype": "공",
+      "itemability": 2
+    }
+  ],
+  "nouseitem": [],
+  "level": 0,
+  "Maxhealth": 100,
+  "currenthealth": 100,
+  "attack": 12.0,
+  "defense": 5,
+  "name": "우혁",
+  "Job": "전사",
+  "Money": 1500
+}

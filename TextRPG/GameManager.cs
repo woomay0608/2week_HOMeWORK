@@ -2,8 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Newtonsoft.Json;
 using static Item.Item;
 using static Play.Player;
 using static TextRPG.Program;
@@ -12,8 +16,10 @@ namespace GameManage
 {
     internal class GameManager
     {
-       
-        public void GameStart()
+
+        
+
+        public Players Init()
         {
             String name;
             int j;
@@ -28,14 +34,11 @@ namespace GameManage
             Console.WriteLine("직업을 결정해라");
             Console.WriteLine("1. 전사 2. 마법사 3. 궁수");
             j = int.Parse(Console.ReadLine());
-            Init(name, j);
-
-        }
-        public void Init(String name, int i)
-        {
+           
+            
             Players player = new Players(name);
             player.currenthealth = player.Maxhealth;
-            switch (i)
+            switch (j)
             {
                 case 1:
                     player.useitem.Add(new Weapon("철검", "기본적인 검이다", 2, "0"));
@@ -55,7 +58,7 @@ namespace GameManage
             Thread.Sleep(1000);
             Console.Clear();
             Console.WriteLine("눈을 뜨니 앞에 한 마을이 보인다.");
-            GoToVillage(player);
+           return player;
         }
 
         public void Death(Players player, bool Gameover)
@@ -162,6 +165,52 @@ namespace GameManage
         }
 
 
+        //블로그 보고 따라만 한 것
+        public void SaveData(Players players)
+        {
+            String file = "C:\\Users\\USER\\Desktop\\2week_HOMeWORK\\player\\player.json";
+            try
+            {
+                string json = JsonConvert.SerializeObject(players, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(file, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public Players LoadData()
+        {
+            String file = "C:\\Users\\USER\\Desktop\\2week_HOMeWORK\\player\\player.json";
+            try
+            {
+                if (File.Exists(file))
+                {
+                    string json = File.ReadAllText(file);
+                    
+                    return JsonConvert.DeserializeObject<Players>(json);
+                    
+                }
+                else
+                {
+                   
+                    return Init();
+                }
+            }
+            catch (Exception ex)
+            {
+               
+                Console.WriteLine($"Error Load data: {ex.Message}");
+                
+                return Init();
+            }
+        }
+
+
 
     }
+
+
+
 }
