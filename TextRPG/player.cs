@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using static Item.Item;
+
 using static TextRPG.Program;
 
 namespace Play
@@ -199,10 +201,13 @@ namespace Play
                 { Console.WriteLine($"최대체력: {Maxhealth}"); }
                 Console.WriteLine($"현재체력: {currenthealth}");
                 Console.WriteLine($"돈: {Money}");
+             
 
                 Console.WriteLine("0.나가기");
 
                 String s = Console.ReadLine();
+
+                
                 if (s.Equals("0"))
                 {
                     Console.Clear();

@@ -20,9 +20,6 @@ internal class Shop
 
     public void ShowItem(List<List<items>> items, Players player, int i)
     {
-        
-
-        
         List<items> onelist = new List<items>();
         List<items> twolist = new List<items>();
         List<items> Threelist = new List<items>();
@@ -202,6 +199,7 @@ internal class Shop
                 else if (ii <= use && 0 < ii)
                 {
                     player.Money += int.Parse(player.useitem[ii - 1].OriginalMoney);
+                    player.useitem[ii - 1].itemMoney = player.useitem[ii - 1].OriginalMoney;
                     Console.WriteLine("판매 성공");
                     Console.WriteLine($"돈 {player.Money - int.Parse(player.useitem[ii - 1].OriginalMoney)} ->{player.Money}");
                     player.useitem.RemoveAt(ii - 1);
@@ -211,6 +209,7 @@ internal class Shop
                 else if (ii > use && ii <= use + nouse)
                 {
                     player.Money += int.Parse(player.nouseitem[ii - use - 1].OriginalMoney);
+                    player.nouseitem[ii - use - 1].itemMoney = player.nouseitem[ii - use - 1].OriginalMoney;
                     Console.WriteLine("판매 성공");
                     Console.WriteLine($"돈 {player.Money - int.Parse(player.nouseitem[ii - use - 1].OriginalMoney)} ->{player.Money}");
                     player.nouseitem.RemoveAt(ii - use - 1);

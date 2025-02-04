@@ -11,13 +11,15 @@ using Newtonsoft.Json;
 using static Item.Item;
 using static Play.Player;
 using static TextRPG.Program;
+using static Item.Item.items;
 
 namespace GameManage
 {
     internal class GameManager
     {
 
-        
+
+
 
         public Players Init()
         {
@@ -73,6 +75,8 @@ namespace GameManage
                 Console.WriteLine("ZZ");
                 Thread.Sleep(1000);
                 Console.WriteLine("Z");
+                File.Delete("C:\\Users\\USER\\Desktop\\2week_HOMeWORK\\player\\player.json");
+                Console.WriteLine("캐릭터 파일 삭제.");
                 Gameover = false;
             }
         }
@@ -166,12 +170,15 @@ namespace GameManage
 
 
         //블로그 보고 따라만 한 것
-        public void SaveData(Players players)
+        public void SaveData(Players players )
         {
+
+
             String file = "C:\\Users\\USER\\Desktop\\2week_HOMeWORK\\player\\player.json";
             try
             {
-                string json = JsonConvert.SerializeObject(players, Newtonsoft.Json.Formatting.Indented);
+                string json = JsonConvert.SerializeObject(players,  Newtonsoft.Json.Formatting.Indented);
+
                 File.WriteAllText(file, json);
             }
             catch (Exception ex)
@@ -210,6 +217,9 @@ namespace GameManage
 
 
     }
+
+
+
 
 
 

@@ -1,6 +1,8 @@
 {
   "useitem": [
     {
+      "itemname": "철검",
+      "itemdesc": "기본적인 검이다",
       "itemMoney": "0",
       "OriginalMoney": "0",
       "itemtype": "공",

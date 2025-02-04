@@ -25,11 +25,6 @@ namespace TextRPG
 
             GoToVillage(player);
         
-
-
-
-
-
         }
 
         public static void GoToVillage(Players player)
@@ -92,6 +87,7 @@ namespace TextRPG
                 Console.WriteLine("4. 여관(휴식)");
                 Console.WriteLine("5. 던전");
                 Console.WriteLine("6. 잠자기(저장 후 종료)");
+                Console.WriteLine("7. 데이터 파기");
                 Console.WriteLine();
                 Console.WriteLine("무엇을 할까?");
                 int select = int.Parse(Console.ReadLine());
@@ -126,6 +122,11 @@ namespace TextRPG
                         Thread.Sleep(1000);
                         Console.WriteLine("Z");
                         GM.SaveData(player);
+                        Environment.Exit(0);
+                        break;
+                    case 7:
+                        File.Delete("C:\\Users\\USER\\Desktop\\2week_HOMeWORK\\player\\player.json");
+                        Environment.Exit(0);
                         break;
                     default:
                         Console.WriteLine("잘못된 입력입니다.");
