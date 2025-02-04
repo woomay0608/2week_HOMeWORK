@@ -160,14 +160,14 @@ namespace Play
                     {
                         foreach (items item in useitem)
                         {
-                            if (item.GetType() == nouseitem[s - use].GetType())
+                            if (item.GetType() == nouseitem[s - use-1].GetType())
                             {
                                 Console.WriteLine("같은 종류의 장비를 장착중입니다.");
                                 Change();
                             }
                         }
-                        useitem.Add(nouseitem[s - use - 1]);
-                        nouseitem.RemoveAt(s - use - 1);
+                        useitem.Add(nouseitem[s - use-1]);
+                        nouseitem.RemoveAt(s - use-1);
                     }
                     else
                     {

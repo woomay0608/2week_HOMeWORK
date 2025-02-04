@@ -30,12 +30,14 @@ namespace TextRPG
 
             if (player.useitem != null)
             {
+                player.attack = (float)(10 + (player.level * 0.5));
+                player.defense = 5 + (player.level * 1);
+                player.Maxhealth = 100;
                 //아이템들 적용시켜주기
                 foreach (items item in player.useitem)
                 {
-                    player.attack = (float)(10 + (player.level *0.5));
-                    player.defense = 5 + (player.level * 1);
-                    player.Maxhealth = 100;
+                   
+    
                     if (player.currenthealth > player.Maxhealth)
                     {
                         player.currenthealth = player.Maxhealth;
