@@ -10,163 +10,136 @@ using GameManage;
 using static TextRPG.Program;
 using Play;
 
-namespace TextRPG
+namespace shopping;
+
+internal class Shop
 {
-    internal class Shop
+
+    public void ShowItem(List<List<items>> items, Players player, int i)
     {
+        int number = 1;
 
-        //게임 매니저에 있는 리스트를 받고 배치를 해야함
-        // tostring에 가격 붙여서
+        List<items> onelist = new List<items>();
+        List<items> twolist = new List<items>();
+        List<items> Threelist = new List<items>();
 
-        public void SetItem(GameManager Gm)
+        onelist = items[0];
+        twolist = items[1];
+        Threelist = items[2];
+
+        Console.WriteLine($"현재 가진 골드:{player.Money}\n");
+
+
+        if (player.level <= 1)
         {
-
-
-            List<List<items>> items = new List<List<items>>();
-
-            items = Gm.ShopItem();
-
+            foreach (items item in onelist)
+            {
+                
+                Console.WriteLine(number+". " +item.ToString() +item.itemMoney);
+                number++;
+            }
+        }
+        if (player.level == 2)
+        {
+            foreach (items item in twolist)
+            {
+                Console.WriteLine(number + ". " + item.ToString() + item.itemMoney);
+                number++;
+            }
+        }
+        if (player.level == 3)
+        {
+            foreach (items item in Threelist)
+            {
+                Console.WriteLine(number + ". " + item.ToString()  + item.itemMoney);
+                number++;
+            }
         }
 
-        public void ShowItem(List<List<items>> items, Players player, int i)
+        if (i == 1) //구매
         {
-            int number = 0;
+            Console.WriteLine();
+            Console.WriteLine("구매할 번호를 선택해주세요");
+            int ii = int.Parse(Console.ReadLine());
 
-            List<items> onelist = new List<items>();
-            List<items> twolist = new List<items>();
-            List<items> Threelist = new List<items>();
-
-            onelist = items[0];
-            twolist = items[1];
-            Threelist = items[2];
-
-            Console.WriteLine($"현재 가진 골드:{player.Money}\n");
-
-
-            if (player.level <= 1)
+            if (player.level < 1 && ii < 9)
             {
-                foreach (items item in onelist)
+                if (int.Parse(onelist[ii - 1].itemMoney) > player.Money || onelist[ii - 1].itemMoney.Equals("판매완료"))
                 {
-                    Console.WriteLine($"{number}. {item.ToString}|{item.itemMoney}");
-
+                    Console.WriteLine("이미 구매하거나 돈이 부족합니다."); //오류 찾기
                 }
-            }
-            if (player.level == 2)
-            {
-                foreach (items item in twolist)
-                {
-                    Console.WriteLine($"{number}. {item.ToString}|{item.itemMoney}");
-
+               if(player.useitem.Count() == 6 && player.nouseitem.Count() == 20)
+               {
+                    Console.WriteLine("가방이 꽉찼습니다.");
                 }
-            }
-            if (player.level == 3)
-            {
-                foreach (items item in Threelist)
+                for (int iii = 0; iii < player.useitem.Count(); iii++)
                 {
-                    Console.WriteLine($"{number}. {item.ToString}|{item.itemMoney}");
-
-                }
-            }
-
-            if (i == 1) //구매
-            {
-                Console.WriteLine();
-                Console.WriteLine("구매할 번호를 선택해주세요");
-                int ii = int.Parse(Console.ReadLine());
-
-                if (player.level < 1 && i < 9)
-                {
-                    if (int.Parse(onelist[ii - 1].itemMoney) > player.Money || onelist[ii - 1].itemMoney.Equals("판매완료"))
+                    if (onelist[ii - 1].GetType() == player.useitem[iii].GetType()) //실수했다
                     {
-                        Console.WriteLine("이미 구매하거나 돈이 부족합니다."); //오류 찾기
-                    }
-
-
-                    if (onelist[ii].GetType() == player.useitem[player.useitem.Count()].GetType())
-                    {
-                        player.nouseitem[player.nouseitem.Count()] = onelist[ii - 1];
+                        player.nouseitem.Add(onelist[ii - 1]); 
                         Console.WriteLine("같은 장비를 착용중이라 가방으로 보내드렸습니다.");
                         onelist[ii - 1].itemMoney = "판매완료";
                     }
-                    else
-                    {
-                        player.useitem[player.useitem.Count()] = onelist[ii - 1];
-                        Console.WriteLine("장착 완료.");
-                        onelist[ii - 1].itemMoney = "판매완료";
-                    }
                 }
-                else if (player.level <= 2 && i > 8 && i < 17)
-                {
-
-                    if (int.Parse(twolist[ii - 9].itemMoney) > player.Money || twolist[ii - 9].itemMoney.Equals("판매완료"))
-                    {
-                        Console.WriteLine("이미 구매하거나 돈이 부족합니다.");
-                    }
-                    if (twolist[ii - 9].GetType() == player.useitem[player.useitem.Count()].GetType())
-                    {
-                        player.nouseitem[player.nouseitem.Count()] = twolist[ii - 9];
-                        Console.WriteLine("같은 장비를 착용중이라 가방으로 보내드렸습니다.");
-                        twolist[ii - 9].itemMoney = "판매완료";
-                    }
-                    else
-                    {
-                        player.useitem[player.useitem.Count()] = twolist[ii - 9];
-                        Console.WriteLine("장착 완료.");
-                        twolist[ii - 9].itemMoney = "판매완료";
-                    }
-                }
-                else if (player.level <= 3 && i > 16 && i < 25)
-                {
-
-                    if (int.Parse(Threelist[ii - 17].itemMoney) > player.Money || Threelist[ii - 17].itemMoney.Equals("판매완료"))
-                    {
-                        Console.WriteLine("이미 구매하거나 돈이 부족합니다.");
-                    }
-                    if (Threelist[ii - 17].GetType() == player.useitem[player.useitem.Count()].GetType())
-                    {
-                        player.nouseitem[player.nouseitem.Count()] = Threelist[ii - 17];
-                        Console.WriteLine("같은 장비를 착용중이라 가방으로 보내드렸습니다.");
-                        Threelist[ii - 17].itemMoney = "판매완료";
-                    }
-                    else
-                    {
-                        player.useitem[player.useitem.Count()] = Threelist[ii - 17];
-                        Console.WriteLine("장착 완료.");
-                        Threelist[ii - 17].itemMoney = "판매완료";
-                    }
-                }
-                else if (i == 2) //판매
-                { }
-                else if (i == 0) // 나가기
-                {
-                    GoToVillage(player);
-                }
-                else { Console.WriteLine("잘못된 입력입니다."); }
-
-
-
-
-
+                player.nouseitem.Add(onelist[ii - 1]);
+                Console.WriteLine("장착 완료.");
+                    onelist[ii - 1].itemMoney = "판매완료";
+               
             }
+            else if (player.level <= 2 && i > 8 && i < 17)
+            {
 
+                if (int.Parse(twolist[ii - 9].itemMoney) > player.Money || twolist[ii - 9].itemMoney.Equals("판매완료"))
+                {
+                    Console.WriteLine("이미 구매하거나 돈이 부족합니다.");
+                }
+                if (twolist[ii - 9].GetType() == player.useitem[player.useitem.Count()].GetType())
+                {
+                    player.nouseitem.Add(twolist[ii - 9]);
+                    Console.WriteLine("같은 장비를 착용중이라 가방으로 보내드렸습니다.");
+                    twolist[ii - 9].itemMoney = "판매완료";
+                }
+                else
+                {
+                    player.useitem[player.useitem.Count()] = twolist[ii - 9];
+                    Console.WriteLine("장착 완료.");
+                    twolist[ii - 9].itemMoney = "판매완료";
+                }
+            }
+            else if (player.level <= 3 && i > 16 && i < 25)
+            {
 
-
-            //구매
-            //일단 돈을 보여주고
-            //장착이 안된 장비라면 자동 장착 -> 검사를 해야한다
-            //장착이 된 장비면 장착 안하는 장비칸으로
-
-
-            //돈이 충분한가
-            //이미 산 품목인가
-
-
-            //판매
-            //내가 입고있는거 or 벗은거
-            //85%를 환불 받아요
-
-
-
+                if (int.Parse(Threelist[ii - 17].itemMoney) > player.Money || Threelist[ii - 17].itemMoney.Equals("판매완료"))
+                {
+                    Console.WriteLine("이미 구매하거나 돈이 부족합니다.");
+                }
+                if (Threelist[ii - 17].GetType() == player.useitem[player.useitem.Count()].GetType())
+                {
+                    player.nouseitem.Add(Threelist[ii - 17]);
+                    Console.WriteLine("같은 장비를 착용중이라 가방으로 보내드렸습니다.");
+                    Threelist[ii - 17].itemMoney = "판매완료";
+                }
+                else
+                {
+                    player.useitem[player.useitem.Count()] = Threelist[ii - 17];
+                    Console.WriteLine("장착 완료.");
+                    Threelist[ii - 17].itemMoney = "판매완료";
+                }
+            }
         }
+        else if (i == 2) //판매
+        { }
+        else if (i == 0) // 나가기
+        {
+            GoToVillage(player);
+        }
+        else { Console.WriteLine("잘못된 입력입니다."); }
+
+
+
+
+
+
+
     }
 }

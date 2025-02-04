@@ -1,23 +1,22 @@
-﻿using System.Text;
-using System.Collections.Generic;
-using static TextRPG.Program;
-using System.Collections;
-using static Item.Item; //item.item. items 인데 생략하게 만들어줌
+﻿using static Item.Item; //item.item. items 인데 생략하게 만들어줌
 using static Play.Player;
 using Enemy;
 using GameManage;
+using shopping;
 
 
 namespace TextRPG
 {
     internal class Program
     {
-        
+        public static GameManager GM = new GameManager();
+        public static List<List<items>> items = new List<List<items>>();
+        private static Shop Shop;
 
         static void Main(string[] args)
         {
-            GameManager GM = new GameManager();
-
+            
+            GM.ShopItem(items);
             GM.GameStart();
 
            
@@ -26,7 +25,8 @@ namespace TextRPG
 
         public static void GoToVillage(Players player)
         {
-
+            
+        
 
             if (player.useitem != null)
             {
@@ -69,7 +69,7 @@ namespace TextRPG
             }
 
             bool Gameend = true;
-            Death(player, Gameend);
+            GM.Death(player, Gameend);
             while (Gameend)
             {
                 Console.Clear();
@@ -97,6 +97,7 @@ namespace TextRPG
                         player.Inventory();
                         break;
                     case 3:
+                        shop(player);
                         break;
                     case 4:
                         Inn(player);
@@ -125,12 +126,24 @@ namespace TextRPG
 
         }
 
-        public void shop(Players player)
+        public static void shop(Players player)
         {
+            Console.WriteLine("[상점주인]");
+            Console.WriteLine($"\"흥정은 없습니다.\"");
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine("1. 구매하기");
+            Console.WriteLine("2. 판매하기");
+            int j = int.Parse(Console.ReadLine());
+
+            Shop Shop = new Shop();
+            Shop.ShowItem(items, player, j);
+
 
 
 
         }
+
+
 
         public static void Inn(Players player)
         {
@@ -170,21 +183,7 @@ namespace TextRPG
         }
         
 
-        public static void Death(Players player, bool Gameover)
-        {
-            if (player.currenthealth <= 0)
-            {
-                Console.WriteLine("눈 앞이 흐려진다");
-                Console.WriteLine("오늘 밤은  악몽을 꿀 것 같다.");
-                Thread.Sleep(1000);
-                Console.WriteLine("ZZZ");
-                Thread.Sleep(1000);
-                Console.WriteLine("ZZ");
-                Thread.Sleep(1000);
-                Console.WriteLine("Z");
-                Gameover = false;
-            }
-        }
+        
 
 
         

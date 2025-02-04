@@ -12,6 +12,7 @@ namespace GameManage
 {
     internal class GameManager
     {
+       
         public void GameStart()
         {
             String name;
@@ -57,7 +58,22 @@ namespace GameManage
             GoToVillage(player);
         }
 
-        public List<List<items>> ShopItem()
+        public void Death(Players player, bool Gameover)
+        {
+            if (player.currenthealth <= 0)
+            {
+                Console.WriteLine("눈 앞이 흐려진다");
+                Console.WriteLine("오늘 밤은  악몽을 꿀 것 같다.");
+                Thread.Sleep(1000);
+                Console.WriteLine("ZZZ");
+                Thread.Sleep(1000);
+                Console.WriteLine("ZZ");
+                Thread.Sleep(1000);
+                Console.WriteLine("Z");
+                Gameover = false;
+            }
+        }
+        public void ShopItem(List<List<items>> items)
         {
 
             // 공격력 1 200
@@ -132,7 +148,7 @@ namespace GameManage
             LevelThree.Add(three8);
 
 
-            List<List<items>> items = new List<List<items>>();
+            
 
 
 
@@ -142,9 +158,10 @@ namespace GameManage
             items.Add(LevelTwo);
             items.Add(LevelThree);
 
-            return items;
-
 
         }
+
+
+
     }
 }
