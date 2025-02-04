@@ -36,16 +36,16 @@ internal class Shop
             Console.WriteLine($"현재 가진 골드:{player.Money}\n");
             while (true)
             {
-                
-                Show(player,items );
+
+                Show(player, items);
                 Console.WriteLine();
                 Console.WriteLine("구매할 번호를 선택해주세요");
                 Console.WriteLine("0은 나가기");
                 int ii = int.Parse(Console.ReadLine());
 
-                if (player.level < 1 && ii < 9 && ii > 0)
+                if (ii < 9 && ii > 0)
                 {
-                    if(onelist[ii - 1].itemMoney.Equals("판매완료"))
+                    if (onelist[ii - 1].itemMoney.Equals("판매완료"))
                     {
                         Console.WriteLine("이미 구매하셨습니다.");
                         ShowItem(items, player, 1);
@@ -69,27 +69,32 @@ internal class Shop
                             player.Money -= int.Parse(onelist[ii - 1].itemMoney);
                             onelist[ii - 1].itemMoney = "판매완료";
                             ShowItem(items, player, 1);
-                            
+
                         }
 
-                        
+
                     }
-                    
+
                     player.useitem.Add(onelist[ii - 1]);
                     Console.WriteLine("장착 완료.");
                     player.Money -= int.Parse(onelist[ii - 1].itemMoney);
                     onelist[ii - 1].itemMoney = "판매완료";
 
                 }
-                else if (player.level <= 2 && i > 8 && i < 17)
+                else if (ii > 8 && ii < 17)
                 {
+                    if (player.level <= 1)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        ShowItem(items, player, 1);
+                    }
 
-                    if (onelist[ii - 1].itemMoney.Equals("판매완료"))
+                    if (twolist[ii - 9].itemMoney.Equals("판매완료"))
                     {
                         Console.WriteLine("이미 구매하셨습니다.");
                         ShowItem(items, player, 1);
                     }
-                    if (int.Parse(onelist[ii - 1].itemMoney) > player.Money)
+                    if (int.Parse(twolist[ii - 9].itemMoney) > player.Money)
                     {
                         Console.WriteLine("돈이 부족합니다.");
                         ShowItem(items, player, 1);
@@ -114,8 +119,13 @@ internal class Shop
                     player.Money -= int.Parse(twolist[ii - 9].itemMoney);
                     twolist[ii - 9].itemMoney = "판매완료";
                 }
-                else if (player.level <= 3 && i > 16 && i < 25)
+                else if (ii > 16 && ii < 25)
                 {
+                    if (player.level <= 2)
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                        ShowItem(items, player, 1);
+                    }
 
                     if (onelist[ii - 1].itemMoney.Equals("판매완료"))
                     {
@@ -136,7 +146,7 @@ internal class Shop
                         if (Threelist[ii - 17].GetType() == player.useitem[iii].GetType())
                         {
                             player.nouseitem.Add(Threelist[ii - 17]);
-                            Console.WriteLine("같은 장비를 착용중이라 가방으로 보내드렸습니다.");                    
+                            Console.WriteLine("같은 장비를 착용중이라 가방으로 보내드렸습니다.");
                             player.Money -= int.Parse(Threelist[ii - 17].itemMoney);
                             Threelist[ii - 17].itemMoney = "판매완료";
                             ShowItem(items, player, 1);
@@ -147,7 +157,7 @@ internal class Shop
                     player.Money -= int.Parse(Threelist[ii - 17].itemMoney);
                     Threelist[ii - 17].itemMoney = "판매완료";
                 }
-                else if(ii == 0)
+                else if (ii == 0)
                 {
                     shop(player);
                 }
@@ -158,21 +168,66 @@ internal class Shop
             }
         }
         else if (i == 2) //판매
-        { }
+        {
+            while (true)
+            {
+                int number = 1;
+
+                int use = player.useitem.Count();
+                int nouse = player.nouseitem.Count();
+                if (player.useitem != null)
+                {
+                    foreach (items item in player.useitem)
+                    {
+                        Console.WriteLine(number + ". [E]" + item.ToString() + item.OriginalMoney);
+                        number++;
+                    }
+                }
+                else { Console.WriteLine("널임"); }
+                if (player.nouseitem != null)
+                {
+                    foreach (items item in player.nouseitem)
+                    {
+                        Console.WriteLine(number + ". " + item.ToString() + item.OriginalMoney);
+                        number++;
+                    }
+                }
+                else { Console.WriteLine("널임"); }
+
+                Console.WriteLine();
+                Console.WriteLine("판매할 장비의 번호를 선택해주세요");
+                Console.WriteLine("0은 나가기");
+                int ii = int.Parse(Console.ReadLine());
+                if (ii == 0) { shop(player); }
+                else if (ii <= use && 0 < ii)
+                {
+                    player.Money += int.Parse(player.useitem[ii - 1].OriginalMoney);
+                    Console.WriteLine("판매 성공");
+                    Console.WriteLine($"돈 {player.Money - int.Parse(player.useitem[ii - 1].OriginalMoney)} ->{player.Money}");
+                    player.useitem.RemoveAt(ii - 1);
+                   
+
+                }
+                else if (ii > use && ii <= use + nouse)
+                {
+                    player.Money += int.Parse(player.nouseitem[ii - use - 1].OriginalMoney);
+                    Console.WriteLine("판매 성공");
+                    Console.WriteLine($"돈 {player.Money - int.Parse(player.nouseitem[ii - use - 1].OriginalMoney)} ->{player.Money}");
+                    player.nouseitem.RemoveAt(ii - use - 1);
+                   
+                }
+                else
+                {
+                    Console.WriteLine("잘못된 입력입니다.");
+                }
+            }
+
+        }
         else if (i == 0) // 나가기
         {
             GoToVillage(player);
         }
         else { Console.WriteLine("잘못된 입력입니다."); }
-
-
-      
-
-
-
-
-
-
     }
     public void Show(Players player, List<List<items>> items )
     {

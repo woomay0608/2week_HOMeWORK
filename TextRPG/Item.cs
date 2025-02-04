@@ -13,8 +13,15 @@ namespace Item
             protected String itemname;
             protected String itemdesc;
             public String itemMoney;
+            public String OriginalMoney;
             public String itemtype = "기본";
+
+
+
+
             public int itemability { get; set; }
+
+    
         }
         public class Weapon : items
         {
@@ -27,6 +34,7 @@ namespace Item
                 itemability = a;
                 itemMoney = m;
                 itemtype = "공";
+                OriginalMoney = m;
             }
             public override string ToString()
             {
@@ -35,6 +43,8 @@ namespace Item
                 String s = str.ToString();
                 return s;
             }
+
+            
         }
         public class Head : items
         {
@@ -47,6 +57,8 @@ namespace Item
                 itemability = a;
                 itemMoney = m;
                 itemtype = "방";
+                OriginalMoney = m;
+            
             }
             public override string ToString()
             {
@@ -67,6 +79,7 @@ namespace Item
                 itemability = a;
                 itemMoney = m;
                 itemtype = "방";
+                OriginalMoney = m;
             }
             public override string ToString()
             {
@@ -87,6 +100,7 @@ namespace Item
                 itemability = a;
                 itemMoney = m;
                 itemtype = "방";
+                OriginalMoney = m;
             }
             public override string ToString()
             {
@@ -106,6 +120,7 @@ namespace Item
                 itemability = a;
                 itemMoney = m;
                 itemtype = "체";
+                OriginalMoney = m;
             }
             public override string ToString()
             {
@@ -124,6 +139,7 @@ namespace Item
                 itemability = a;
                 itemMoney = m;
                 itemtype = "체";
+                OriginalMoney = m;
             }
             public override string ToString()
             {

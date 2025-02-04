@@ -130,8 +130,8 @@ namespace TextRPG
 
         public static void shop(Players player)
         {
-            Console.WriteLine("[상점주인]");
-            Console.WriteLine($"\"흥정은 없습니다.\"");
+            Console.WriteLine("[상점주인/ 김씨 아저씨]");
+            Console.WriteLine($"\"흥정은 없다.\"");
             Console.WriteLine("0. 나가기");
             Console.WriteLine("1. 구매하기");
             Console.WriteLine("2. 판매하기");
@@ -171,12 +171,21 @@ namespace TextRPG
                     }
                     else
                     {
+                        Console.WriteLine("푹 쉬다 가렴");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("ZZZ");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("ZZ");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("Z");
                         player.currenthealth += 50;
                         if (player.currenthealth > player.Maxhealth)
                         {
                             player.currenthealth = player.Maxhealth;
                         }
                         player.Money -= 500;
+                        Console.WriteLine($"체력:{player.currenthealth-50}->{player.currenthealth}");
+                        Console.WriteLine($"돈:{player.Money + 500}->{player.Money}");
                     }
                 }
                 else if (j == 0) { GoToVillage(player); }
