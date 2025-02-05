@@ -8,9 +8,9 @@ using static TextRPG.Program;
 
 namespace Enemy
 {
-    internal class Maze
+    internal class Dungeon
     {
-        public static void Dungeon(Players player)
+        public static void Dungeons(Players player)
         {
             while (true)
             {
@@ -39,7 +39,7 @@ namespace Enemy
             }
 
         }
-        public static void Dungeonrule(Players player)
+        public static void Dungeonrule(Players player) //던전의 규칙 보여주기
         {
             Console.Clear();
             Console.WriteLine("던전의 난이도는 총 3개입니다.");
@@ -63,11 +63,11 @@ namespace Enemy
        
             Console.WriteLine("0. 나가기");
             int j = int.Parse(Console.ReadLine());
-            if (j == 0) { Dungeon(player); }
+            if (j == 0) { Dungeon.Dungeons(player); }
             else { Console.WriteLine("잘못된 입력입니다"); }
         }
 
-        public static void GotoDungeon(Players player)
+        public static void GotoDungeon(Players player) //던전 들어가기 전
         {
 
 
@@ -94,7 +94,7 @@ namespace Enemy
         }
 
 
-        public static void DungeonTry(Players player, int defense, int level)
+        public static void DungeonTry(Players player, int defense, int level) //던전에 도전하기
         {
             Random ran = new Random();
             int winper = ran.Next(0, 5);
@@ -104,9 +104,10 @@ namespace Enemy
             int ClearMoney = 0;
             switch (level)
             {
+                //클리어 돈 계산
                 case 1:
                     ClearMoney = 1000;
-                    plusMoney = (ClearMoney * (ran.Next((int)player.attack, (int)player.attack * 2)) / 100);
+                    plusMoney = (ClearMoney * (ran.Next((int)player.attack, (int)player.attack * 2)) / 100); 
                     break;
                 case 2:
                     ClearMoney = 1700;
@@ -119,9 +120,9 @@ namespace Enemy
             }
 
 
-            if (player.defense <= defense)
+            if (player.defense <= defense) //권장 방어력 보다 낮을 때
             {
-                if (winper >= 0 && winper < 2)
+                if (winper >= 0 && winper < 2) //성공할 확률 40%
                 {
                     Console.WriteLine("던전 클리어!");
                     Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n" +
@@ -142,25 +143,27 @@ namespace Enemy
                     int j = int.Parse(Console.ReadLine());
                     if (j == 0)
                     {
-                        GoToVillage(player);
+                        GoToVillage(player); //다시 마을로 돌아가기
                     }
 
                 }
                 else
                 {
-                    Console.WriteLine("던전 패배");
+                    //패배했을 때
+                    Console.WriteLine("던전 패배"); 
                     Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}");
                     player.currenthealth -= minushealth;
                     Console.WriteLine("0. 나가기");
                     int j = int.Parse(Console.ReadLine());
                     if (j == 0)
                     {
-                        GoToVillage(player);
+                        GoToVillage(player);//다시 마을로 돌아가기
                     }
                 }
             }
             else
             {
+                //던전에 승리했을 때
                 Console.WriteLine("던전 승리!");
                 Console.WriteLine($"체력:{player.currenthealth}->{player.currenthealth - minushealth}\n" +
                         $"돈:{player.Money} ->{player.Money + ClearMoney + plusMoney}");
@@ -170,7 +173,7 @@ namespace Enemy
 
                 Console.WriteLine("레벨업!");
 
-
+                //레벨이 오르면 능력치 증가
                 Console.WriteLine($"레벨:{player.level - 1}->{player.level}");
                 Console.WriteLine("공격 0.5 증가 , 방어 1 증가 ");
 

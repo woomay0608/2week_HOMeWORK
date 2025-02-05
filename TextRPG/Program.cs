@@ -17,10 +17,10 @@ namespace TextRPG
         {
             
             GM.ShopItem(items);
-            Players player = GM.LoadData();
+            Players player = GM.LoadData(); //데이터 로드
             if (player == null ) 
             {
-                player = GM.Init();
+                player = GM.Init();//없으면 초기화
             }
 
             GoToVillage(player);
@@ -31,17 +31,17 @@ namespace TextRPG
         {
             
         
-
+            //능력치 적용 시키기
             if (player.useitem != null)
             {
+                //레벨에 따른 능력치
                 player.attack = (float)(10 + (player.level * 0.5));
                 player.defense = 5 + (player.level * 1);
                 player.Maxhealth = 100;
-                //아이템들 적용시켜주기
+                
                 foreach (items item in player.useitem)
                 {
-                   
-    
+                    //아이템들 적용시켜주기
                     if (player.currenthealth > player.Maxhealth)
                     {
                         player.currenthealth = player.Maxhealth;
@@ -69,13 +69,14 @@ namespace TextRPG
             }
             else
             {
+                //장착 아이템이 없으면 기본 능력치
                 player.attack = 10;
                 player.defense = 5;
                 player.Maxhealth = 100;
             }
 
             bool Gameend = true;
-            GM.Death(player, Gameend);
+            GM.Death(player, Gameend); //들어가기전에 죽었는지 확인
             while (Gameend)
             {
                 Console.Clear();
@@ -95,7 +96,7 @@ namespace TextRPG
 
 
 
-                switch (select)
+                switch (select) //선택에 따라서 각자 진행
                 {
                     case 1:
                         player.Status();
@@ -110,9 +111,9 @@ namespace TextRPG
                         Inn(player);
                         break;
                     case 5:
-                        Maze.Dungeon(player);
+                        Dungeon.Dungeons(player);
                         break;
-                    case 6:
+                    case 6: //게임을 저장하고 게임 종료
                         Gameend = false;
                         Console.WriteLine("오늘밤은 좋은 꿈을 꿀 것 같다.");
                         Thread.Sleep(1000);
@@ -124,7 +125,7 @@ namespace TextRPG
                         GM.SaveData(player);
                         Environment.Exit(0);
                         break;
-                    case 7:
+                    case 7: //파기
                         File.Delete("C:\\Users\\USER\\Desktop\\2week_HOMeWORK\\player\\player.json");
                         Environment.Exit(0);
                         break;
@@ -163,7 +164,7 @@ namespace TextRPG
 
             while (true)
             {
-
+                //돈이 있으면 체력회복
                 Console.WriteLine("[촌장의 아내/ 베이지]");
                 Console.WriteLine($"\"{player.name}이 오랜만이네 조금 쉬다가렴~\"");
                 Console.WriteLine("0. 나가기");
@@ -176,7 +177,7 @@ namespace TextRPG
                         Console.WriteLine("돈이 쪼금 모자라네~");
 
                     }
-                    else if (player.currenthealth == player.Maxhealth)
+                    else if (player.currenthealth == player.Maxhealth) //이미 풀이면 못하게
                     {
                         Console.WriteLine("몸이 멀쩡한 것 같은데?");
                     }
@@ -189,10 +190,10 @@ namespace TextRPG
                         Console.WriteLine("ZZ");
                         Thread.Sleep(1000);
                         Console.WriteLine("Z");
-                        player.currenthealth += 50;
+                        player.currenthealth += 50; 
                         if (player.currenthealth > player.Maxhealth)
                         {
-                            player.currenthealth = player.Maxhealth;
+                            player.currenthealth = player.Maxhealth; //체력이 만땅을 넘지 않도록
                         }
                         player.Money -= 500;
                         Console.WriteLine($"체력:{player.currenthealth-50}->{player.currenthealth}");

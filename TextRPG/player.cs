@@ -27,8 +27,8 @@ namespace Play
             //public Item[] EquipItem = new Item[7]; //투구, 갑옷, 신발, 무기, 액세사리, 액세사리
             //public Item[] NoEquip = new Item [20];//가방
 
-            public List<items> useitem = new List<items>();
-            public List<items> nouseitem = new List<items>();
+            public List<items> useitem = new List<items>();//장착 중인 장비
+            public List<items> nouseitem = new List<items>(); // 장착하지 않은 장비
 
 
 
@@ -37,19 +37,19 @@ namespace Play
 
             public Players(String n)
             {
-                name = n;
-                Job = "dd";
-                level = 0;
-                Maxhealth = 100;
-                attack = 10;
-                defense = 5;
-                Money = 1500;
+                name = n; //이름
+                Job = "dd"; //직업
+                level = 0; //레벨
+                Maxhealth = 100; //최대 체력
+                attack = 10; //공격력
+                defense = 5; //방어력
+                Money = 1500; //돈
                 
             }
 
-            public void Inventory()
+            public void Inventory() //장비를 보여주는 메소드
             {
-                if (useitem.Count() == 0 && nouseitem.Count() == 0)
+                if (useitem.Count() == 0 && nouseitem.Count() == 0)//장비가 없을 때
                 {
                     Console.WriteLine("장비가 없습니다.");
                     Thread.Sleep(700);
@@ -57,7 +57,7 @@ namespace Play
                     GoToVillage(this);
                 }
 
-                if (useitem != null)
+                if (useitem != null) //널검사후 보여주기
                 {
                     for (int i = 0; i < useitem.Count(); i++)
                     {
@@ -66,7 +66,7 @@ namespace Play
                     }
                 }
 
-                if (nouseitem != null)
+                if (nouseitem != null)//널검사후 보여주기
                 {
                     for (int i = 0; i < nouseitem.Count(); i++)
                     {
@@ -76,6 +76,7 @@ namespace Play
 
                 while (true)
                 {
+                    //장비 설정 할지 말지 입력받기
                     Console.WriteLine("0. 나가기");
                     Console.WriteLine("1. 장비 설정");
                     int s = int.Parse(Console.ReadLine());
@@ -99,16 +100,18 @@ namespace Play
 
 
             }
-            public void Change()
+            public void Change() 
             {
-
+                //장비를 바꾸는 메소드
 
 
                 while (true)
                 {
-                    int number = 1;
-                    int nouse = nouseitem.Count();
-                    int use = useitem.Count();
+                    int number = 1; //장비 앞에 번호 달기
+                    int nouse = nouseitem.Count(); //안쓴 장비 갯수
+                    int use = useitem.Count(); //장비 갯수
+
+                    //장비 보여주기 번호 + 장비
                     if (useitem != null)
                     {
                         for (int i = 0; i < use; i++)
@@ -134,7 +137,7 @@ namespace Play
                     }
 
 
-
+                    //가방이 꽉차면 오류
                     if (nouse > 20)
                     {
                         Console.WriteLine("가방 칸이 꽉찼습니다.");
@@ -148,13 +151,13 @@ namespace Play
 
                     if (s == 0)
                     {
-                        Inventory();
+                        Inventory();//나가면 다시 아이템 보여주기
                     }
                     else if (s > 0 && use >= s && use != 0) //장착에서 비장착
                     {
 
-                        nouseitem.Add(useitem[s - 1]);
-                        useitem.RemoveAt(s - 1);
+                        nouseitem.Add(useitem[s - 1]); // 장착에서 -> 비장착
+                        useitem.RemoveAt(s - 1); // 장착에서 지우기
 
 
                     }
@@ -162,14 +165,14 @@ namespace Play
                     {
                         foreach (items item in useitem)
                         {
-                            if (item.GetType() == nouseitem[s - use-1].GetType())
+                            if (item.GetType() == nouseitem[s - use-1].GetType()) //같은 장비가 있다면 리턴
                             {
                                 Console.WriteLine("같은 종류의 장비를 장착중입니다.");
                                 Change();
                             }
                         }
-                        useitem.Add(nouseitem[s - use-1]);
-                        nouseitem.RemoveAt(s - use-1);
+                        useitem.Add(nouseitem[s - use-1]); //비장착 -> 장착
+                        nouseitem.RemoveAt(s - use-1); //비장착에서 지우기
                     }
                     else
                     {
@@ -188,7 +191,7 @@ namespace Play
                 Console.WriteLine("chad:" + Job);
 
                 if (attack > 10)
-                { Console.WriteLine($"공격력: {attack} + ({attack - 10})"); }
+                { Console.WriteLine($"공격력: {attack} + ({attack - 10})"); } // 추가 능력치 있을때만 능력치 + 추가 능력치 띄우기
                 else
                 { Console.WriteLine($"공격력: {attack}"); }
                 if (defense > 5)

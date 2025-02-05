@@ -21,7 +21,7 @@ namespace GameManage
 
 
 
-        public Players Init()
+        public Players Init() //처음 캐릭터 정보를 만들어주는 메소드
         {
             String name;
             int j;
@@ -42,8 +42,9 @@ namespace GameManage
             player.currenthealth = player.Maxhealth;
             switch (j)
             {
+                //직업에 따라서 기본 지급 무기가 다름
                 case 1:
-                    player.useitem.Add(new Weapon("철검", "기본적인 검이다", 2, "0"));
+                    player.useitem.Add(new Weapon("철검", "기본적인 검이다", 2, "0")); 
                     player.Job = "전사";
                     break;
                 case 2:
@@ -65,7 +66,7 @@ namespace GameManage
 
         public void Death(Players player, bool Gameover)
         {
-            if (player.currenthealth <= 0)
+            if (player.currenthealth <= 0) //플레이어의 체력이 낮으면 사망
             {
                 Console.WriteLine("눈 앞이 흐려진다");
                 Console.WriteLine("오늘 밤은  악몽을 꿀 것 같다.");
@@ -76,7 +77,7 @@ namespace GameManage
                 Thread.Sleep(1000);
                 Console.WriteLine("Z");
                 File.Delete("C:\\Users\\USER\\Desktop\\2week_HOMeWORK\\player\\player.json");
-                Console.WriteLine("캐릭터 파일 삭제.");
+                Console.WriteLine("캐릭터 파일 삭제."); //캐릭터 삭제
                 Gameover = false;
             }
         }
